@@ -1,0 +1,1136 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sambung Kata</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ============================== */
+      /* CSS STYLING & VARIABLES        */
+      /* ============================== */
+      :root {
+        --bg0: #070a12;
+        --bg1: #0b1220;
+        --card: #0b1220cc;
+        --stroke: #ffffff1a;
+        --text: #eaf2ff;
+        --muted: #b7c5da;
+        --accent1: #00d4ff;
+        --accent2: #a855f7;
+        --accent3: #22c55e;
+        --accent-danger: #ef4444;
+        --shadow: 0 20px 80px rgba(0, 0, 0, 0.55);
+        --radius: 22px;
+      }
+
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            1000px 600px at 20% 15%,
+            rgba(168, 85, 247, 0.22),
+            transparent 55%
+          ),
+          radial-gradient(
+            900px 520px at 80% 25%,
+            rgba(0, 212, 255, 0.2),
+            transparent 55%
+          ),
+          radial-gradient(
+            900px 520px at 55% 85%,
+            rgba(34, 197, 94, 0.12),
+            transparent 60%
+          ),
+          linear-gradient(180deg, var(--bg0), var(--bg1));
+        background-attachment: fixed;
+      }
+
+      /* --- BACKGROUND GRID & BLOBS --- */
+      .grid {
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(
+            to right,
+            rgba(255, 255, 255, 0.04) 1px,
+            transparent 1px
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.04) 1px,
+            transparent 1px
+          );
+        background-size: 44px 44px;
+        mask-image: radial-gradient(
+          circle at 50% 30%,
+          #000 0 55%,
+          transparent 72%
+        );
+        pointer-events: none;
+        opacity: 0.55;
+        z-index: 0;
+      }
+
+      .blob {
+        position: fixed;
+        width: 520px;
+        height: 520px;
+        filter: blur(36px);
+        opacity: 0.35;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 30% 30%, var(--accent1), transparent 55%),
+          radial-gradient(circle at 70% 70%, var(--accent2), transparent 55%);
+        animation: floaty 10s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .blob.b2 {
+        width: 560px;
+        height: 560px;
+        left: auto;
+        background:
+          radial-gradient(circle at 30% 30%, var(--accent3), transparent 55%),
+          radial-gradient(circle at 70% 70%, var(--accent2), transparent 60%);
+        animation-duration: 13s;
+        opacity: 0.26;
+      }
+
+      @keyframes floaty {
+        0% {
+          transform: translate(-8%, -6%) scale(1);
+        }
+        50% {
+          transform: translate(10%, 8%) scale(1.05);
+        }
+        100% {
+          transform: translate(-8%, -6%) scale(1);
+        }
+      }
+
+      /* --- BACKGROUND FLOATING ICONS --- */
+      .bg-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .floating-item {
+        position: absolute;
+        bottom: -100px;
+        color: var(--accent1);
+        font-size: 3rem;
+        opacity: 0.04;
+        animation: floatUp linear infinite;
+      }
+      .floating-item:nth-child(1) {
+        left: 10%;
+        animation-duration: 15s;
+        font-size: 4rem;
+      }
+      .floating-item:nth-child(2) {
+        left: 30%;
+        animation-duration: 20s;
+        font-size: 2.5rem;
+        animation-delay: 3s;
+      }
+      .floating-item:nth-child(3) {
+        left: 50%;
+        animation-duration: 18s;
+        font-size: 5rem;
+        animation-delay: 7s;
+        color: var(--accent2);
+      }
+      .floating-item:nth-child(4) {
+        left: 70%;
+        animation-duration: 22s;
+        font-size: 3rem;
+        animation-delay: 2s;
+      }
+      .floating-item:nth-child(5) {
+        left: 85%;
+        animation-duration: 16s;
+        font-size: 4.5rem;
+        animation-delay: 5s;
+        color: var(--accent3);
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) rotate(0deg) scale(0.8);
+          opacity: 0;
+        }
+        20% {
+          opacity: 0.08;
+        }
+        80% {
+          opacity: 0.08;
+        }
+        100% {
+          transform: translateY(-120vh) rotate(360deg) scale(1.2);
+          opacity: 0;
+        }
+      }
+
+      /* --- MAIN WRAPPER & CARD --- */
+      .wrap {
+        min-height: 100%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 38px 18px;
+        position: relative;
+        z-index: 10;
+      }
+
+      .card {
+        width: min(550px, 100%);
+        background: var(--card);
+        border: 1px solid var(--stroke);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        position: relative;
+        backdrop-filter: blur(15px);
+        animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        margin-bottom: 30px;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* --- TOPBAR & PROFILE --- */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 22px;
+        border-bottom: 1px solid var(--stroke);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.06),
+          transparent
+        );
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+      }
+      .ico-logo {
+        width: 45px;
+        height: 45px;
+        border-radius: 14px;
+        border: 1px solid var(--stroke);
+        background: linear-gradient(
+          135deg,
+          rgba(0, 212, 255, 0.1),
+          rgba(168, 85, 247, 0.1)
+        );
+        display: grid;
+        place-items: center;
+        font-size: 24px;
+        color: var(--accent1);
+        box-shadow: 0 5px 15px rgba(0, 212, 255, 0.2);
+      }
+      .brand small {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-weight: 600;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .brand small span {
+        color: var(--accent1);
+      }
+
+      .pill {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--stroke);
+        color: var(--muted);
+        font-size: 12px;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .pulse {
+        width: 8px;
+        height: 8px;
+        border-radius: 99px;
+        background: var(--accent3);
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+        animation: ping 1.6s infinite;
+      }
+      .pulse.loading {
+        background: var(--accent1);
+        animation: pingBlue 1.6s infinite;
+      }
+      .pulse.error {
+        background: var(--accent-danger);
+        animation: none;
+        box-shadow: none;
+      }
+
+      @keyframes ping {
+        0% {
+          box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+        }
+      }
+      @keyframes pingBlue {
+        0% {
+          box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.55);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(0, 212, 255, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(0, 212, 255, 0);
+        }
+      }
+
+      /* --- CONTENT & INPUTS --- */
+      .content {
+        padding: 25px 22px 30px;
+      }
+      h1 {
+        margin: 0 0 5px;
+        font-size: 24px;
+        line-height: 1.2;
+      }
+      .lead {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+        margin: 0 0 20px;
+      }
+      .grad {
+        background: linear-gradient(90deg, var(--accent1), var(--accent2));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .input-box {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      .input-wrapper {
+        position: relative;
+      }
+      .input-wrapper i {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-size: 18px;
+      }
+      .input-wrapper input {
+        width: 100%;
+        padding: 14px 16px 14px 45px;
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--stroke);
+        border-radius: 14px;
+        color: var(--text);
+        font-family: inherit;
+        font-size: 14px;
+        transition: all 0.3s;
+        outline: none;
+      }
+      .input-wrapper input:focus {
+        border-color: var(--accent1);
+        background: rgba(0, 212, 255, 0.05);
+        box-shadow: 0 0 15px rgba(0, 212, 255, 0.15);
+      }
+      .input-wrapper input::placeholder {
+        color: var(--muted);
+        opacity: 0.5;
+      }
+
+      /* --- SEGMENTED CONTROL --- */
+      .sorting-tabs {
+        display: flex;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        padding: 5px;
+        border: 1px solid var(--stroke);
+        margin-bottom: 25px;
+      }
+      .sorting-tabs input[type="radio"] {
+        display: none;
+      }
+      .sorting-tabs label {
+        flex: 1;
+        text-align: center;
+        padding: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.3s;
+      }
+      .sorting-tabs input[type="radio"]:checked + label {
+        background: var(--stroke);
+        color: var(--text);
+      }
+
+      /* --- RESULTS HEADER --- */
+      .res-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        border-bottom: 1px dashed var(--stroke);
+        padding-bottom: 12px;
+      }
+      .res-header h3 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .res-header h3 i {
+        color: var(--accent2);
+      }
+
+      .badge-count {
+        background: linear-gradient(135deg, var(--accent1), var(--accent2));
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 99px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .btn-reset {
+        background: transparent;
+        color: var(--muted);
+        border: none;
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        transition: 0.3s;
+      }
+      .btn-reset:hover {
+        color: var(--accent-danger);
+      }
+
+      /* --- GRID FEATURES LIST (Sesuai Permintaan) --- */
+      .features {
+        display: grid;
+        grid-template-columns: repeat(
+          auto-fill,
+          minmax(130px, 1fr)
+        ); /* Bikin ngelebar kotak-kotak */
+        gap: 10px;
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 5px;
+        align-content: start;
+      }
+
+      /* Custom Scrollbar */
+      .features::-webkit-scrollbar {
+        width: 4px;
+      }
+      .features::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+      }
+      .features::-webkit-scrollbar-thumb {
+        background: var(--stroke);
+        border-radius: 10px;
+      }
+
+      /* Desain kotak kata seperti di foto (ada border kiri cyan) */
+      .feat {
+        border: 1px solid var(--stroke);
+        border-left: 3px solid var(--accent1);
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 6px;
+        padding: 12px 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feat:hover {
+        background: rgba(0, 212, 255, 0.1);
+        transform: translateY(-2px);
+        border-color: rgba(0, 212, 255, 0.3);
+      }
+
+      .feat.is-clicked {
+        transform: scale(0.96);
+        background: var(--accent1);
+      }
+      .feat.is-clicked .word-text {
+        color: #000;
+      }
+
+      .feat.used {
+        opacity: 0.5;
+        border-color: rgba(239, 68, 68, 0.3);
+        border-left-color: var(--accent-danger);
+        background: transparent;
+      }
+      .feat.used .word-text {
+        text-decoration: line-through;
+        color: var(--muted);
+      }
+
+      .word-text {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: 0.5px;
+        text-transform: lowercase;
+        font-family: "JetBrains Mono", monospace; /* Font techy mirip di foto */
+      }
+
+      .empty-state {
+        grid-column: 1 / -1; /* Biar di tengah full */
+        text-align: center;
+        padding: 30px 10px;
+        color: var(--muted);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      .empty-state i {
+        font-size: 40px;
+        opacity: 0.5;
+        color: var(--accent2);
+      }
+      .empty-state p {
+        font-size: 13px;
+        margin: 0;
+      }
+
+      /* RIPPLE EFFECT */
+      .ripple {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: scale(0);
+        animation: rippleAnim 0.5s linear;
+        pointer-events: none;
+      }
+      @keyframes rippleAnim {
+        to {
+          transform: scale(4);
+          opacity: 0;
+        }
+      }
+
+      /* TOAST */
+      #toast-container {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 1000;
+        pointer-events: none;
+      }
+      .toast {
+        background: var(--card);
+        color: var(--text);
+        padding: 12px 20px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--stroke);
+        border-top: 2px solid var(--accent3);
+        animation: slideUpToast 0.3s forwards;
+      }
+      .toast.error {
+        border-top-color: var(--accent-danger);
+      }
+      .toast.hide {
+        animation: fadeOutToast 0.3s forwards;
+      }
+      @keyframes slideUpToast {
+        from {
+          transform: translateY(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      @keyframes fadeOutToast {
+        to {
+          transform: translateY(100%);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="grid"></div>
+    <div class="blob" style="top: -140px; left: -160px"></div>
+    <div class="blob b2" style="bottom: -180px; right: -170px"></div>
+
+    <div class="bg-animation">
+      <i class="ri-text-spacing floating-item"></i>
+      <i class="ri-translate-2 floating-item"></i>
+      <i class="ri-font-size floating-item"></i>
+      <i class="ri-file-word-line floating-item"></i>
+      <i class="ri-a-b floating-item"></i>
+    </div>
+
+    <main class="wrap">
+      <section class="card">
+        <div class="topbar">
+          <div class="brand">
+            <div class="ico-logo"><i class="ri-book-read-fill"></i></div>
+            <div>
+              <div>Kamus SangKat</div>
+              <small><span>115k+</span> Kosakata Murni</small>
+            </div>
+          </div>
+
+          <div class="pill" id="status-pill">
+            <span class="pulse loading" id="status-dot"></span>
+            <span id="status-text">Memuat...</span>
+          </div>
+        </div>
+
+        <div class="content">
+          <h1>Sambung <span class="grad">Kata</span></h1>
+          <p class="lead">
+            Mentok pas main? Coba sini tes masukin kata nya. Kalo bener syukur, kalo enggak yaudah.
+          </p>
+
+          <div class="input-box">
+            <div class="input-wrapper">
+              <i class="ri-font-color"></i>
+              <input
+                type="text"
+                id="awalan"
+                placeholder="Kata awal..."
+                autocomplete="off"
+                spellcheck="false"
+                autofocus
+              />
+            </div>
+            <div class="input-wrapper">
+              <i class="ri-text-wrap"></i>
+              <input
+                type="text"
+                id="akhiran"
+                placeholder="Kata akhir (Opsional)..."
+                autocomplete="off"
+                spellcheck="false"
+              />
+            </div>
+          </div>
+
+          <div class="sorting-tabs">
+            <input
+              type="radio"
+              id="sort_abjad"
+              name="sort"
+              value="abjad"
+              checked
+            />
+            <label for="sort_abjad">A - Z</label>
+
+            <input type="radio" id="sort_pendek" name="sort" value="pendek" />
+            <label for="sort_pendek">Terpendek</label>
+
+            <input type="radio" id="sort_panjang" name="sort" value="panjang" />
+            <label for="sort_panjang">Terpanjang</label>
+          </div>
+
+          <div class="res-header">
+            <h3>
+              <i class="ri-list-check"></i> Hasil Pencarian
+              <span class="badge-count" id="result-count">0</span>
+            </h3>
+            <button class="btn-reset" onclick="resetMemory()">
+              <i class="ri-refresh-line"></i> Reset
+            </button>
+          </div>
+
+          <div class="features" id="word-container">
+            <div class="empty-state">
+              <i class="ri-keyboard-line"></i>
+              <p>Mulai ketik pada kolom di atas untuk mencari.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast-container"></div>
+
+    <script>
+      let kamusLengkap = [];
+      let usedWordsSession = new Set();
+
+      // Variabel Infinite Scroll
+      let currentFilteredWords = [];
+      let renderedCount = 0;
+      const CHUNK_SIZE = 150;
+
+      const containerEl = document.getElementById("word-container");
+      const countEl = document.getElementById("result-count");
+      const statusText = document.getElementById("status-text");
+      const statusDot = document.getElementById("status-dot");
+      const inputAwalan = document.getElementById("awalan");
+      const inputAkhiran = document.getElementById("akhiran");
+      const radioSorts = document.querySelectorAll('input[name="sort"]');
+
+      window.onload = async function () {
+        try {
+          statusDot.className = "pulse loading";
+          statusText.innerText = "Mencari Database...";
+
+          const dbUrls = [
+            {
+              url: "https://raw.githubusercontent.com/LibreOffice/dictionaries/master/id/id_ID.dic",
+              type: "dic",
+            },
+            {
+              url: "https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/id/id_50k.txt",
+              type: "freq",
+            },
+          ];
+
+          let rawText = "";
+          let dbType = "";
+          let fetchSuccess = false;
+
+          for (let db of dbUrls) {
+            try {
+              let res = await fetch(db.url);
+              if (res.ok) {
+                rawText = await res.text();
+                dbType = db.type;
+                fetchSuccess = true;
+                break;
+              }
+            } catch (e) {
+              continue;
+            }
+          }
+
+          if (!fetchSuccess) throw new Error("Semua link mati");
+
+          let cleanWords = [];
+          if (dbType === "dic") {
+            cleanWords = rawText
+              .split("\n")
+              .map((w) => w.split("/")[0].trim().toLowerCase());
+          } else if (dbType === "freq") {
+            cleanWords = rawText
+              .split("\n")
+              .map((w) => w.split(" ")[0].trim().toLowerCase());
+          }
+
+          cleanWords = cleanWords.filter((k) => {
+            return (
+              k.length > 1 &&
+              !k.includes(" ") &&
+              !k.includes(".") &&
+              !k.includes("-") &&
+              !k.includes("'") &&
+              !/\d/.test(k)
+            );
+          });
+
+          cleanWords = cleanWords.map((k) =>
+            k.normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
+          );
+
+          // ==========================================
+          // INJEKSI KATA CUSTOM DARI LU
+          // ==========================================
+          const kataCustom = [
+            "cimex",
+            "echinosorex",
+            "ex",
+            "forex",
+            "gallierex",
+            "ilex",
+            "index",
+            "murex",
+            "softex",
+            "spinifex",
+            "vilex",
+            "vitex",
+            "addax",
+            "apterix",
+            "bombyx",
+            "bordeaux",
+            "caloperdrix",
+            "caranx",
+            "caronx",
+            "chalcococyx",
+            "chx",
+            "circumfix",
+            "coix",
+            "confix",
+            "cyathocalyx",
+            "donax",
+            "helix",
+            "hystrix",
+            "ix",
+            "lux",
+            "marx",
+            "max",
+            "melanoperdix",
+            "meritrix",
+            "microhierax",
+            "molitrix",
+            "mystax",
+            "naiasptatrix",
+            "natrix",
+            "nephotettix",
+            "nephottotix",
+            "ninox",
+            "nontax",
+            "nothopanax",
+            "nycticorax",
+            "offax",
+            "olfax",
+            "pallacalyx",
+            "phoenix",
+            "rhinoplax",
+            "salix",
+            "simulfix",
+            "smilax",
+            "sphinx",
+            "sputatrix",
+            "styrax",
+            "trionyx",
+            "ultraorthodox",
+            "varilux",
+            "abstinency",
+            "affluency",
+            "antipiracy",
+            "arrogancy",
+            "corpulency",
+            "cryptocurrency",
+            "delegitimacy",
+            "excellency",
+            "incompetency",
+            "nonlegitimacy",
+            "nontransparency",
+            "prodemocracy",
+            "recalcitrancy",
+            "resurgency",
+            "verdancy",
+            "anaesthesiology",
+            "bioenergy",
+            "craniology",
+            "oceanology",
+            "paleoanthropology",
+            "phytopathology",
+            "seismology",
+            "traumatology",
+            "vulcanology",
+            "affirmingly",
+            "assertedly",
+            "billy",
+            "bily",
+            "diddly",
+            "disproportionally",
+            "errorlessly",
+            "impassionately",
+            "neighbourly",
+            "overabundantly",
+            "piddly",
+            "resupply",
+            "retally",
+            "sandfly",
+            "sectorally",
+            "separably",
+            "westwardly",
+            "assignability",
+            "collectability",
+            "disproportionality",
+            "grotty",
+            "manoeuvrability",
+            "modernality",
+            "nonuniformity",
+            "privity",
+            "setipinnataty",
+            "silty",
+            "sparsity",
+            "taty",
+            "wearability",
+            "weatherability",
+            "oxalidaceae",
+            "oxyeleotris",
+            "oxypetalum",
+            "oxidating",
+            "oxleyanum",
+            "oxyhyncus",
+            "oxyphylla",
+            "oxidated",
+            "oxidate",
+            "oxyris",
+            "exclusivism",
+            "exocoetidae",
+            "excoecaria",
+            "exocecaria",
+            "exocarpus",
+            "exoecaria",
+            "excavata",
+            "excelsum",
+            "excelsa",
+            "expansa",
+            "exelse",
+            "eximia",
+            "exodus",
+            "expat",
+            "expo",
+          ];
+
+          kamusLengkap = [...new Set([...cleanWords, ...kataCustom])];
+
+          statusDot.className = "pulse";
+          statusText.innerText = "Online (Pro DB)";
+          document.querySelector(".brand small span").innerText =
+            kamusLengkap.length.toLocaleString("id-ID");
+
+          inputAwalan.focus();
+        } catch (error) {
+          console.error("Fetch Error:", error);
+          try {
+            const backupRes = await fetch(
+              "https://raw.githubusercontent.com/sastrawi/sastrawi/master/data/kata-dasar.txt",
+            );
+            const backupText = await backupRes.text();
+            let backupArray = backupText
+              .split("\n")
+              .map((k) => k.trim().toLowerCase());
+            kamusLengkap = [...new Set(backupArray)].filter(
+              (k) => k.length > 1 && /^[a-z]+$/.test(k),
+            );
+
+            statusDot.className = "pulse";
+            statusText.innerText = "Online (Mode Dasar)";
+            document.querySelector(".brand small span").innerText =
+              kamusLengkap.length.toLocaleString("id-ID");
+            inputAwalan.focus();
+          } catch (e) {
+            statusDot.className = "pulse error";
+            statusText.innerText = "Offline";
+            showToast("Koneksi gagal.", "error");
+          }
+        }
+      };
+
+      inputAwalan.addEventListener("input", cariKata);
+      inputAkhiran.addEventListener("input", cariKata);
+      radioSorts.forEach((radio) => radio.addEventListener("change", cariKata));
+
+      containerEl.addEventListener("scroll", () => {
+        if (renderedCount >= currentFilteredWords.length) return;
+        if (
+          containerEl.scrollTop + containerEl.clientHeight >=
+          containerEl.scrollHeight - 20
+        ) {
+          renderChunk();
+        }
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          inputAwalan.value = "";
+          inputAkhiran.value = "";
+          inputAwalan.focus();
+          cariKata();
+        }
+      });
+
+      function showToast(message, type = "success") {
+        const tc = document.getElementById("toast-container");
+        const t = document.createElement("div");
+        t.className = `toast ${type}`;
+        t.innerHTML = `<i class="${type === "success" ? "ri-checkbox-circle-fill" : "ri-error-warning-fill"}" style="color: ${type === "success" ? "var(--accent3)" : "var(--accent-danger)"}; font-size: 18px;"></i> <span>${message}</span>`;
+        tc.appendChild(t);
+        setTimeout(() => {
+          t.classList.add("hide");
+          setTimeout(() => t.remove(), 300);
+        }, 2000);
+      }
+
+      function resetMemory() {
+        if (usedWordsSession.size === 0) return;
+        usedWordsSession.clear();
+        cariKata();
+        showToast("Riwayat salinan dihapus");
+      }
+
+      function cariKata() {
+        let awalan = inputAwalan.value.toLowerCase().trim();
+        let akhiran = inputAkhiran.value.toLowerCase().trim();
+        let modeUrut = document.querySelector(
+          'input[name="sort"]:checked',
+        ).value;
+
+        if (!awalan && !akhiran) {
+          countEl.innerText = `0`;
+          containerEl.innerHTML = `<div class="empty-state"><i class="ri-keyboard-line"></i><p>Mulai ketik pada kolom di atas untuk mencari.</p></div>`;
+          return;
+        }
+
+        let hasil = kamusLengkap;
+        if (awalan) hasil = hasil.filter((k) => k.startsWith(awalan));
+        if (akhiran) hasil = hasil.filter((k) => k.endsWith(akhiran));
+
+        if (modeUrut === "abjad") hasil.sort();
+        else if (modeUrut === "pendek")
+          hasil.sort((a, b) => a.length - b.length);
+        else hasil.sort((a, b) => b.length - a.length);
+
+        currentFilteredWords = hasil;
+        renderedCount = 0;
+        containerEl.innerHTML = "";
+        containerEl.scrollTop = 0;
+
+        if (currentFilteredWords.length > 0) {
+          countEl.innerText = `${currentFilteredWords.length.toLocaleString("id-ID")}`;
+          renderChunk();
+        } else {
+          renderEmpty();
+        }
+      }
+
+      function renderChunk() {
+        const fragment = document.createDocumentFragment();
+        const limit = Math.min(
+          renderedCount + CHUNK_SIZE,
+          currentFilteredWords.length,
+        );
+
+        for (let i = renderedCount; i < limit; i++) {
+          let kata = currentFilteredWords[i];
+
+          const card = document.createElement("div");
+          card.className = "feat ripple-trigger";
+          if (usedWordsSession.has(kata)) card.classList.add("used");
+
+          // Tampilan simpel cuma text biar kayak foto referensi lu
+          card.innerHTML = `<span class="word-text">${kata}</span>`;
+
+          card.onclick = function (e) {
+            this.classList.add("is-clicked");
+            setTimeout(() => {
+              this.classList.remove("is-clicked");
+            }, 200);
+
+            navigator.clipboard.writeText(kata).then(() => {
+              showToast(`Kata "${kata}" disalin!`);
+              usedWordsSession.add(kata);
+              this.classList.add("used");
+            });
+          };
+
+          fragment.appendChild(card);
+        }
+
+        containerEl.appendChild(fragment);
+        renderedCount = limit;
+      }
+
+      function renderEmpty() {
+        countEl.innerText = `0`;
+        containerEl.innerHTML = `<div class="empty-state"><i class="ri-file-search-line"></i><p>Tidak ada kata murni yang cocok.</p></div>`;
+      }
+
+      document.addEventListener("click", function (e) {
+        const btn = e.target.closest(".ripple-trigger");
+        if (!btn) return;
+
+        const existingRipple = btn.querySelector(".ripple");
+        if (existingRipple) {
+          existingRipple.remove();
+        }
+
+        const circle = document.createElement("span");
+        const diameter = Math.max(btn.clientWidth, btn.clientHeight);
+        const radius = diameter / 2;
+        const rect = btn.getBoundingClientRect();
+
+        circle.style.width = circle.style.height = `${diameter}px`;
+        circle.style.left = `${e.clientX - rect.left - radius}px`;
+        circle.style.top = `${e.clientY - rect.top - radius}px`;
+        circle.classList.add("ripple");
+
+        btn.appendChild(circle);
+      });
+    </script>
+  </body>
+</html>
